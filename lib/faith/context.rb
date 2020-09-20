@@ -10,5 +10,9 @@ module Faith
     def ran?(task)
       tasks_executed.include?(task)
     end
+
+    def mixins
+      mixin_instances.to_h { |x| [x.mixin.name, x] }
+    end
   end
 end

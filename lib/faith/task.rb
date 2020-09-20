@@ -23,17 +23,17 @@ module Faith
       # Instantiate mixins
       new_mixin_instances = mixins.map { |m| m.instantiate(context) }
       new_mixin_instances.each do |m|
-        m.instance_exec(context, &m.mixin.before)
+        m.instance_exec(context, &m.mixin.before) unless m.mixin.before.nil?
         context.mixin_instances << m
       end
 
       # Run this task
-      action.(context)
+      context.instance_exec(&action)
       context.tasks_executed << self
 
       # Tear down mixins
       new_mixin_instances.each do |m|
-        m.instance_exec(context, &m.mixin.after)
+        m.instance_exec(context, &m.mixin.after) unless m.mixin.after.nil?
         context.mixin_instances.delete(m)
       end
     end

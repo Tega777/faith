@@ -112,5 +112,29 @@ RSpec.describe Faith do
       
       expect(x).to eq ((5 + 10) * 2 + 5 + 3 + 1)
     end
+
+    it 'can provide' do
+      x = 0
+
+      Faith::DSL.to_root do
+        task 'example', mixins: ['a', 'b'] do
+          x += mixins['a'].number * mixins['b'].number
+        end
+
+        mixin 'a' do
+          before do
+            provide number: 5
+          end
+        end
+
+        mixin 'b' do
+          before do
+            provide number: 4
+          end
+        end
+      end.resolve('example').run(Faith::Context.new)
+
+      expect(x).to eq 20
+    end
   end
 end

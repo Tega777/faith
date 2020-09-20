@@ -1,6 +1,6 @@
 module Faith
   class MixinInstance
-    def initialize(mixin, provided: [])
+    def initialize(mixin, provided: {})
       @mixin = mixin
       @provided = provided
     end
