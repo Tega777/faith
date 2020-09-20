@@ -25,6 +25,10 @@ module Faith
       puts indented("#{Rainbow("Mixin #{mixin.full_name} -").blue.bold}")
     end
 
+    def sequence(task)
+      puts indented("#{Rainbow("Sequence #{task.full_name} -").blue.bold}")
+    end
+
     def mixin_action(action)
       puts indented("#{Rainbow(action).dark.bold}")
     end

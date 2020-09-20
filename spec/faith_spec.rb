@@ -137,4 +137,24 @@ RSpec.describe Faith do
       expect(x).to eq 20
     end
   end
+
+  context 'sequences' do
+    it 'are executed correctly' do
+      x = 0
+
+      Faith::DSL.to_root do
+        sequence 'example' do
+          task 'a' do
+            x += 1
+          end
+
+          task 'b' do
+            x += 5
+          end
+        end
+      end.resolve('example').run(Faith::Context.new)
+
+      expect(x).to eq 6
+    end
+  end
 end

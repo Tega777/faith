@@ -23,10 +23,17 @@ module Faith
       end
 
       def group(name, &block)
-        group = Group.new(name, @parent)
+        group = Group.new(name, @parent, [])
         @parent.children << group
 
         Docile.dsl_eval(ChildBuilder.new(group), &block)
+      end
+
+      def sequence(name, &block)
+        seq = Sequence.new(name, @parent, [])
+        @parent.children << seq
+
+        Docile.dsl_eval(ChildBuilder.new(seq), &block)
       end
     end
 

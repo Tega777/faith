@@ -41,8 +41,8 @@ module Faith
       end
 
       # Run this task
-      context.instance_exec(&action)
-      context.output.run(self)
+      context.instance_exec(context, &action)
+      context.output.run(self) unless is_a?(Sequence)
 
       # Tear down mixins
       new_mixin_instances.each do |m|
