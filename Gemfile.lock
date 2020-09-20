@@ -1,0 +1,59 @@
+PATH
+  remote: .
+  specs:
+    faith (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.1)
+    commander (4.5.2)
+      highline (~> 2.0.0)
+    diff-lcs (1.4.4)
+    highline (2.0.3)
+    parlour (2.1.0)
+      commander (~> 4.5)
+      parser
+      rainbow (~> 3.0)
+      sorbet-runtime (>= 0.5)
+    parser (2.7.1.4)
+      ast (~> 2.4.1)
+    rainbow (3.0.0)
+    rake (12.3.3)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
+    rspec-core (3.9.2)
+      rspec-support (~> 3.9.3)
+    rspec-expectations (3.9.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-mocks (3.9.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.9.0)
+    rspec-support (3.9.3)
+    sorbet (0.5.5913)
+      sorbet-static (= 0.5.5913)
+    sorbet-runtime (0.5.5913)
+    sorbet-static (0.5.5913-universal-darwin-14)
+    sord (2.0.0)
+      commander (~> 4.5)
+      parlour (~> 2.0)
+      sorbet-runtime
+      yard
+    yard (0.9.25)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  faith!
+  rake (~> 12.0)
+  rspec (~> 3.0)
+  sorbet
+  sord
+  yard
+
+BUNDLED WITH
+   2.1.4

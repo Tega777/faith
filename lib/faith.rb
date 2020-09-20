@@ -1,0 +1,5 @@
+require 'faith/version'
+require 'faith/context'
+require 'faith/mixin'
+require 'faith/mixin_instance'
+require 'faith/task'
