@@ -18,7 +18,7 @@ RSpec.describe Faith do
     end
   end
 
-  context 'depedencies' do
+  context 'dependencies' do
     it 'are executed correctly' do
       x = 0
 
