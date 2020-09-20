@@ -8,3 +8,4 @@ require 'faith/namespace'
 require 'faith/group'
 
 require 'faith/dsl'
+require 'faith/output'

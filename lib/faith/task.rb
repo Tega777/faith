@@ -15,25 +15,40 @@ module Faith
     end
 
     def run(context)
+      context.tasks_executed << self
+      
       # Run dependencies, if not run before
-      dependencies.each do |dep|
-        dep.run(context) unless context.ran?(dep)
+      any_dependencies = dependencies.reject { |dep| context.ran?(dep) }.any?
+      if any_dependencies
+        context.output.dependencies(self)
+        context.output.indent
       end
+      dependencies.each do |dep|
+        unless context.ran?(dep)
+          dep.run(context) 
+        end
+      end
+      context.output.dedent if any_dependencies
 
       # Instantiate mixins
       new_mixin_instances = mixins.map { |m| m.instantiate(context) }
       new_mixin_instances.each do |m|
+        context.output.mixin(m.mixin)
+        context.output.indent
+        context.output.mixin_action("before")
         m.instance_exec(context, &m.mixin.before) unless m.mixin.before.nil?
         context.mixin_instances << m
       end
 
       # Run this task
       context.instance_exec(&action)
-      context.tasks_executed << self
+      context.output.run(self)
 
       # Tear down mixins
       new_mixin_instances.each do |m|
+        context.output.mixin_action("after")
         m.instance_exec(context, &m.mixin.after) unless m.mixin.after.nil?
+        context.output.dedent
         context.mixin_instances.delete(m)
       end
     end

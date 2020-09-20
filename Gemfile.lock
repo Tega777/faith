@@ -3,12 +3,14 @@ PATH
   specs:
     faith (0.1.0)
       docile
+      rainbow
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.4.4)
     docile (1.3.2)
+    rainbow (3.0.0)
     rake (12.3.3)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)

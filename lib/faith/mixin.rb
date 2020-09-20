@@ -9,6 +9,10 @@ module Faith
 
     attr_accessor :name, :parent, :before, :after
 
+    def full_name
+      parent ? "#{parent.full_name}:#{name}" : name
+    end
+
     def instantiate(context)
       MixinInstance.new(self)
     end

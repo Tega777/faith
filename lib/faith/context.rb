@@ -3,9 +3,10 @@ module Faith
     def initialize
       @mixin_instances = []
       @tasks_executed = []
+      @output = Output.new
     end
 
-    attr_accessor :mixin_instances, :tasks_executed
+    attr_accessor :mixin_instances, :tasks_executed, :output
 
     def ran?(task)
       tasks_executed.include?(task)
