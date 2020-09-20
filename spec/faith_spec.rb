@@ -52,4 +52,37 @@ RSpec.describe Faith do
       expect(x).to eq 19
     end
   end
+
+  context 'mixins' do
+    it 'are executed correctly' do
+      x = 0
+
+      mixin = Faith::Mixin.new('dep', nil, before: ->_{ x += 5 }, after: ->_{ x += 10 })
+
+      Faith::Task.new('example', nil, mixins: [mixin]) do
+        x += 1
+      end.run(Faith::Context.new)
+
+      expect(x).to eq 16
+    end
+
+    it 'run multiple times' do
+      x = 0
+
+      mixin = Faith::Mixin.new('dep', nil, before: ->_{ x += 5 }, after: ->_{ x += 10 })
+
+      a = Faith::Task.new('a', nil, mixins: [mixin]) do
+        x += 5
+      end
+      b = Faith::Task.new('b', nil, mixins: [mixin]) do
+        x += 3
+      end
+
+      Faith::Task.new('example', nil, dependencies: [a, b]) do
+        x += 1
+      end.run(Faith::Context.new)
+
+      expect(x).to eq ((5 + 10) * 2 + 5 + 3 + 1)
+    end
+  end
 end
