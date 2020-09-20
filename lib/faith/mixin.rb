@@ -12,5 +12,7 @@ module Faith
     def instantiate(context)
       MixinInstance.new(self)
     end
+
+    def resolve_self!; end
   end
 end

@@ -20,13 +20,18 @@ RSpec.describe Faith do
     it 'are executed correctly' do
       x = 0
 
-      dep = Faith::Task.new('dep', nil) do
+      root = Faith::Group.new('root', nil, [])
+
+      root.children << Faith::Task.new('dep', root) do
         x += 10
       end
 
-      Faith::Task.new('example', nil, dependencies: [dep]) do
+      root.children << example = Faith::Task.new('example', root, dependencies: ['dep']) do
         x += 1
-      end.run(Faith::Context.new)
+      end
+      
+      root.resolve_self!
+      example.run(Faith::Context.new)
 
       expect(x).to eq 11
     end
@@ -34,20 +39,25 @@ RSpec.describe Faith do
     it 'only run once' do
       x = 0
 
-      dep = Faith::Task.new('dep', nil) do
+      root = Faith::Group.new('root', nil, [])
+
+      root.children << Faith::Task.new('dep', root) do
         x += 10
       end
 
-      a = Faith::Task.new('a', nil, dependencies: [dep]) do
+      root.children << Faith::Task.new('a', root, dependencies: ['dep']) do
         x += 5
       end
-      b = Faith::Task.new('b', nil, dependencies: [dep]) do
+      root.children << Faith::Task.new('b', root, dependencies: ['dep']) do
         x += 3
       end
 
-      Faith::Task.new('example', nil, dependencies: [a, b]) do
+      root.children << example = Faith::Task.new('example', root, dependencies: ['a', 'b']) do
         x += 1
-      end.run(Faith::Context.new)
+      end
+
+      root.resolve_self!
+      example.run(Faith::Context.new)
 
       expect(x).to eq 19
     end
@@ -57,11 +67,16 @@ RSpec.describe Faith do
     it 'are executed correctly' do
       x = 0
 
-      mixin = Faith::Mixin.new('dep', nil, before: ->_{ x += 5 }, after: ->_{ x += 10 })
+      root = Faith::Group.new('root', nil, [])
 
-      Faith::Task.new('example', nil, mixins: [mixin]) do
+      root.children << Faith::Mixin.new('mix', root, before: ->_{ x += 5 }, after: ->_{ x += 10 })
+
+      root.children << example = Faith::Task.new('example', root, mixins: ['mix']) do
         x += 1
-      end.run(Faith::Context.new)
+      end
+      
+      root.resolve_self!
+      example.run(Faith::Context.new)
 
       expect(x).to eq 16
     end
@@ -69,18 +84,23 @@ RSpec.describe Faith do
     it 'run multiple times' do
       x = 0
 
-      mixin = Faith::Mixin.new('dep', nil, before: ->_{ x += 5 }, after: ->_{ x += 10 })
+      root = Faith::Group.new('root', nil, [])
 
-      a = Faith::Task.new('a', nil, mixins: [mixin]) do
+      root.children << Faith::Mixin.new('mix', root, before: ->_{ x += 5 }, after: ->_{ x += 10 })
+
+      root.children << Faith::Task.new('a', root, mixins: ['mix']) do
         x += 5
       end
-      b = Faith::Task.new('b', nil, mixins: [mixin]) do
+      root.children << Faith::Task.new('b', root, mixins: ['mix']) do
         x += 3
       end
 
-      Faith::Task.new('example', nil, dependencies: [a, b]) do
+      root.children << example = Faith::Task.new('example', root, dependencies: ['a', 'b']) do
         x += 1
-      end.run(Faith::Context.new)
+      end
+      
+      root.resolve_self!
+      example.run(Faith::Context.new)
 
       expect(x).to eq ((5 + 10) * 2 + 5 + 3 + 1)
     end
