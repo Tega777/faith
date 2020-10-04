@@ -1,5 +1,6 @@
 require 'faith/version'
 
+require 'faith/named'
 require 'faith/context'
 require 'faith/mixin'
 require 'faith/mixin_instance'

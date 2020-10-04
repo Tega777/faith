@@ -10,9 +10,7 @@ module Faith
     
     attr_accessor :name, :parent, :mixins, :dependencies, :action
 
-    def full_name
-      parent ? "#{parent.full_name}:#{name}" : name
-    end
+    include Named
 
     def run(context)
       context.tasks_executed << self
