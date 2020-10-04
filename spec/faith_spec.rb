@@ -157,4 +157,22 @@ RSpec.describe Faith do
       expect(x).to eq 6
     end
   end
+
+  context 'name validation' do
+    it 'rejects : in names' do
+      expect do
+        Faith::DSL.to_root do
+          task 'a:b' do end
+        end
+      end.to raise_error ArgumentError
+    end
+
+    it 'rejects the name \'root\'' do
+      expect do
+        Faith::DSL.to_root do
+          task 'root' do end
+        end
+      end.to raise_error ArgumentError
+    end
+  end
 end
