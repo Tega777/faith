@@ -1,8 +1,51 @@
 # Faith
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/faith`. To experiment with that code, run `bin/console` for an interactive prompt.
+**This is a work in progress. Tasks can't be run from a CLI yet, and many
+features are unimplemented.**
 
-TODO: Delete this and the text above, and describe your gem
+Faith is an **powerful and extremely versatile task runner**. Using a lovely
+Ruby DSL, you can:
+
+- Define named tasks
+    - Can be invoked with arguments and options*
+- Assign dependencies between tasks
+- Group tasks together into sensible and organised namespaces
+- Build sequences of tasks which run in order
+    - Can either exit or continue if one task fails*
+- Create parallel groups of tasks*
+- Add mixins, which wrap tasks to enhance their environment by running _before_
+  and _after_ tasks
+
+\* - Not yet implemented
+
+## DSL Example
+
+```ruby
+# A very simple, not-real-world example
+
+# Create two mixins, which can provide `number` to a task
+mixin 'a' do
+    before do
+        provide number: 5
+    end
+end
+
+mixin 'b' do
+    before do
+        provide number: 4
+    end
+end
+
+# Now, create an executable task which uses those provided values
+task 'example', mixins: ['a', 'b'] do
+    puts mixins['a'].number * mixins['b'].number # => 20
+end
+```
+
+## Use Case
+
+Faith should make a great starting point for building your own bespoke testing
+framework, or if you feel like you're outgrowing Rake.
 
 ## Installation
 
@@ -20,20 +63,14 @@ Or install it yourself as:
 
     $ gem install faith
 
-## Usage
+## Name
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Named after [Faith Connors](https://en.wikipedia.org/wiki/Faith_Connors), a
+**runner** from the _Mirror's Edge_ video games.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/faith.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/AaronC81/faith.
 
 ## License
 
